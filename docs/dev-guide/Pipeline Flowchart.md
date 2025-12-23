@@ -31,7 +31,20 @@ flowchart LR
 
 ## Step 3 — TrainFlexiUnet (PyTorch)
 
-**Input:** `--root <path-to-step-2-output>`  
+**Input:** 
+```python
+   "--root", "path/to/training data" # Path to folder with outputs of CreateDataSet.
+   "--epochs", "200", # Number of training epochs 
+   "--batch-size", "4" , # Number of images in training batch. Limited by GPU RAM
+   "--lr", '2e-3', # Learning rate. Should scale with batch number
+   "--layers", '4', # Number of layers in Unet. 4/5 works pretty well
+   "--device", "cuda", # use GPU vs CPU
+   "--base-filters", '32', # Width of Unet. 16/32 work pretty well
+   "--save-every", "5", # Checkpoint for weights every X epochs
+   "--val-split", "0.12", # Percent of data used for validation
+   "--val-every", "5", # Run validation every X eps. Slower but diagnostically helpful
+   "--augs-per-sample", "5", # Number of times each image is augmented in training
+```
 **Output:**
 - `.pth` model weights
 - `.csv` training metrics
@@ -50,5 +63,6 @@ flowchart LR
 
 ## Optional — Compile inference app
 See **Dev Guide → Compile app**.
+
 
 
