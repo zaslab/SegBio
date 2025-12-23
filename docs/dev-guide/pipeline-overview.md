@@ -2,11 +2,12 @@
 
 ```mermaid
 flowchart LR
-  A["1. WormMarkerGUI<br>centerlines + widths + heads"] --> B["2. CreateDataSet<br>UUID folders + masks"]
-  B --> C["3. TrainFlexiUnet<br>predict fg / boundary / seed"]
-  C --> D["4. worm_editor_gui<br>interactive inference + edits"]
-  D --> E["5. Exports<br>labels + boundary/seed + sizes"]
-  D --> F["Optional: Compile app<br>PyInstaller"]
+  A["1. WormMarkerGUI<br>centerlines+widths+heads"] --> B["2. CreateDataSet<br>UUID folders + masks"]
+  B --> C["3. TrainFlexiUnet<br>predict fg/boundary/seed"]
+  C --> D["4. worm_editor_gui<br> inference+edits"]
+  D --> E["5. Exports<br>label/boundary/seed+sizes"]
+
+  F["Optional: Compile app<br>PyInstaller"]
 ```
 
 ## Step 1 — WormMarkerGUI (MATLAB annotation)
@@ -23,7 +24,7 @@ flowchart LR
 - `box` — Nx4 bounding boxes
 - `head_coords`
 - `heads_mask`, `tails_mask`
-- `ignore_mask` (a “neck” band to allow flexibility near head boundary)
+- `ignore_mask` (a “neck” band to allow flexibility near head/tail boundary)
 - `in` (original image)
 - `out` (instance-labeled worm masks)
 - `strain` (parsed from folder names; note: may be brittle)
@@ -39,7 +40,7 @@ flowchart LR
 
 **Inputs:**
 - (optional) image path to open
-- model weights path (defaults to weights in the same folder)
+- (optional) model weights path (defaults to weights in the same folder)
 
 **Outputs:**
 - `*_labels.npy` — per-worm instance mask labels
@@ -48,5 +49,6 @@ flowchart LR
 - `*_sizes.csv` — worm metrics (length, width, area, etc.)
 
 ## Optional — Compile inference app
-See **User Guide → Compile app**.
+See **Dev Guide → Compile app**.
+
 
