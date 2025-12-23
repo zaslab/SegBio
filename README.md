@@ -12,8 +12,8 @@ This pipeline is designed to maximize efficiency by combining rapid, inexact use
 The workflow is broken into five key stages:
 
 1. **Rapid Annotation (MATLAB):** Instead of fully tracing each worm, the user provides "partial" annotations (midline and width) using a custom MATLAB GUI (**WormMarkerGUI.mlapp**).
-2. **Data Generation (MATLAB):** A separate MATLAB script (**ADD SCRIPT**) extrapolates these simple annotations into a full set of training masks.
-3.**Model Training (PyTorch): A highly configurable U-Net (**FlexiUnet.py**) is trained to predict three separate channels from a single input image.
+2. **Data Generation (MATLAB):** A separate MATLAB script (**CreateDataSet.m**) extrapolates these simple annotations into a full set of training masks.
+3. **Model Training (PyTorch): A highly configurable U-Net (**FlexiUnet.py**) is trained to predict three separate channels from a single input image.
    The network's architecture is flexible, allowing for easy adjustment of its depth and filter count to scale the model's capacity. The model is trained to output:
    Foreground Mask: The body of the worms.
    Boundary Map: The pixels separating touching worms.
