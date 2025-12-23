@@ -1,6 +1,8 @@
 # WormSegmentor
 WormSegmentor is a complete system for segmenting and separating long, narrow, bendy objects like C. elegans worms
 
+<img width="1417" height="391" alt="image" src="https://github.com/user-attachments/assets/bd8281ed-377e-49cb-baa7-5daccf8da705" />
+
 ## The Challenge: Slow Annotation
 
 Instance segmentation for biomedical images is powerful, but creating the training data is a major bottleneck. Manually tracing every single worm in a clustered image is time-consuming, tedious, and scales poorly.
@@ -13,13 +15,13 @@ The workflow is broken into five key stages:
 
 1. **Rapid Annotation (MATLAB):** Instead of fully tracing each worm, the user provides "partial" annotations (midline and width) using a custom MATLAB GUI (**WormMarkerGUI.mlapp**).
 2. **Data Generation (MATLAB):** A separate MATLAB script (**CreateDataSet.m**) extrapolates these simple annotations into a full set of training masks.
-3. **Model Training (PyTorch): A highly configurable U-Net (**FlexiUnet.py**) is trained to predict three separate channels from a single input image.
+3. **Model Training (Python/PyTorch):** A highly configurable U-Net (**FlexiUnet.py**) is trained to predict three separate channels from a single input image.
    The network's architecture is flexible, allowing for easy adjustment of its depth and filter count to scale the model's capacity. The model is trained to output:
    Foreground Mask: The body of the worms.
    Boundary Map: The pixels separating touching worms.
    Seed Map: A unique "center" or skeleton for each worm.
 4. **Inference & Post-processing (Python):** The 3-channel output from the U-Net is fed into a 'watershed' algorithm. The seeds mark the start of each "basin," and the boundaries act as dams allowing the watershed to robustly separate instances that are touching in the foreground mask.
-5. **Human-in-the-Loop (Python):** A final Python-based GUI (**ADD SCRIPT**) loads the inference results and allows the user to quickly correct any errors (e.g., merging or splitting instances).
+5. **Human-in-the-Loop (Python/Napari):** A final Python-based GUI (**worm_editor_gui**) loads the inference results and allows the user to quickly correct any errors (e.g., merging or splitting instances).
 
 ## Key Features
 
@@ -28,13 +30,14 @@ The workflow is broken into five key stages:
 * **Flexible Model:** The 'FlexiUnet.py' is parameterized for variable depth ('--depth') and filter count ('--base-filters'), making it easy to reconfigure.
 * **Model Training:** Includes augmentations ('segmentor_utils.py'), a multi-channel loss function, validation splits, and checkpointing ('TrainFlexiUnet.py').
 * **Automated Post-processing:** Includes an inference-time step ('postproc.py') that automatically filters and cleans the raw model output by removing small, noisy detections, and refining boundaries.
-* **Plug-and-Play Inference GUI:** Provides a simple Python-based graphical interface for end-users to load their own C. elegans images, run the full segmentation pipeline, and get immediate results.
+* **Standalone Inference GUI:** Provides a simple self-contained Python-based app that doesn't require any dependencies or even a python installation. Allows end-users to load their own C. elegans images, run the full segmentation pipeline, and get immediate results.
 
 ## Tech Stack
 
-* **Python 3.x**
+* **Python 3**
 * **PyTorch**
 * **scikit-image** & **scipy**
 * **NumPy**
 * **OpenCV**
+* **Napari**
 * **MATLAB** & **MATLAB App Designer**
