@@ -2,11 +2,11 @@
 
 ```mermaid
 flowchart LR
-  A[1. WormMarkerGUI<br/>manual centerlines + widths + heads] --> B[2. CreateDataSet<br/>UUID folders + masks]
-  B --> C[3. TrainFlexiUnet<br/>UNet predicts fg/boundary/seed]
-  C --> D[4. worm_editor_gui<br/>interactive inference + edits]
-  D --> E[5. Exports<br/>labels + boundary/seed + sizes]
-  D --> F[(Optional) Compile app<br/>PyInstaller]
+  A["1. WormMarkerGUI<br>centerlines + widths + heads"] --> B["2. CreateDataSet<br>UUID folders + masks"]
+  B --> C["3. TrainFlexiUnet<br>predict fg / boundary / seed"]
+  C --> D["4. worm_editor_gui<br>interactive inference + edits"]
+  D --> E["5. Exports<br>labels + boundary/seed + sizes"]
+  D --> F["Optional: Compile app<br>PyInstaller"]
 ```
 
 ## Step 1 — WormMarkerGUI (MATLAB annotation)
@@ -49,3 +49,4 @@ flowchart LR
 
 ## Optional — Compile inference app
 See **User Guide → Compile app**.
+
