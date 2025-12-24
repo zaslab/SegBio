@@ -38,7 +38,7 @@ The workflow is broken into five key stages:
 * Run WormGUIApp.exe
 ## Tech Stack
 
-* **Python 3**
+* **Python**
 * **PyTorch**
 * **scikit-image** & **scipy**
 * **NumPy**
