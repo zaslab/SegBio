@@ -32,6 +32,10 @@ The workflow is broken into five key stages:
 * **Automated Post-processing:** Includes an inference-time step ('postproc.py') that automatically filters and cleans the raw model output by removing small, noisy detections, and refining boundaries.
 * **Standalone Inference GUI:** Provides a simple self-contained Python-based app that doesn't require any dependencies or even a python installation. Allows end-users to load their own C. elegans images, run the full segmentation pipeline, and get immediate results.
 
+## Quickstart
+* Download the standalone app from [here](https://www.dropbox.com/scl/fi/q01kcil5p79d6v9he9m5x/WormSegmentor.zip?rlkey=43cvr2h5c3svy3ka2t5d8tchs&st=lf99peps&dl=1)
+* Keep the weights file (.pth) in the same folder as WormGUIApp.
+* Run WormGUIApp.exe
 ## Tech Stack
 
 * **Python 3**
