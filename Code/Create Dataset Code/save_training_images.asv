@@ -75,7 +75,7 @@ for i = 1:numel(meas)
     measures = S.measures;
     if isempty(measures) || size(measures,2) < 2
         warning('Bad/empty measures in %s', mpath);
-        skipped{end+1} = mpath; %#ok<AGROW>
+        skipped{end+1} = mpath; 
         continue
     end
 
@@ -100,7 +100,7 @@ for i = 1:numel(meas)
             end
         else
             fprintf('No head_coords; skipping (interactive=false): %s\n', sample_id);
-            skipped{end+1} = mpath; %#ok<AGROW>
+            skipped{end+1} = mpath; 
             continue
         end
     end
@@ -109,12 +109,11 @@ for i = 1:numel(meas)
     [heads_by_worm, is_start_by_worm, pairs, um_w, um_h] = assign_heads_to_worms( ...
         measures, head_coords, struct('max_dist_px', opts.max_head_dist, ...
                                       'max_end_frac', opts.max_end_frac, ...
-                                      'lambda_end',   opts.lambda_end)); %#ok<ASGLU>
-
+                                      'lambda_end',   opts.lambda_end)); 
     if ~isempty(um_w)
         fprintf('Warning: %d worms unmatched in %s (skipping unmatched)\n', numel(um_w), sample_id);
         logpath = indir+ "\Missed.csv";
-        row = {mpath};  % <-- your values in column order
+        row = {mpath};  
         Trow = cell2table(row, 'VariableNames', "Path");
         writetable(Trow, logpath, 'WriteMode','append', 'WriteVariableNames', false);
     end
@@ -283,7 +282,7 @@ function save_mat_bundle(sample_dir, in, out_inst, heads_mask, tails_mask,...
 save(fullfile(sample_dir, 'in.mat'), 'in');
 
 % instance map
-out = out_inst; %#ok<NASGU>
+out = out_inst; 
 save(fullfile(sample_dir, 'out.mat'), 'out');
 
 % class masks
@@ -294,17 +293,17 @@ save(fullfile(sample_dir, 'head_bound.mat'),  'head_bound')
 save(fullfile(sample_dir, 'tail_bound.mat'),  'tail_bound')
 
 % boxes
-box = BOX; %#ok<NASGU>  % Nx4
+box = BOX; 
 save(fullfile(sample_dir, 'box.mat'), 'box');
 
 % heads
 if nargin < 7 || isempty(head_coords)
-    head_coords = zeros(0,2); %#ok<NASGU>
+    head_coords = zeros(0,2); 
 end
 save(fullfile(sample_dir, 'head_coords.mat'), 'head_coords');
 
 % strain
 if nargin < 8 || isempty(strain_val), strain_val = 'unknown'; end
-strain = char(strain_val); %#ok<NASGU>
+strain = char(strain_val); 
 save(fullfile(sample_dir, 'strain.mat'), 'strain');
 end
