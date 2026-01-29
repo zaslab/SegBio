@@ -83,9 +83,9 @@ out.maxW     = maxW;
 
 % ------------- build asymmetric width ------
 if ~isempty(w_profile_opt)
-    % If a per-point profile was provided in measures, just resample it.
+    % If a per-point profile was provided in measures, resample it.
     w_rel = resample_profile(w_profile_opt(:), numel(s));
-    % Ensure the peak is at 1 (relative), normalize gently
+    % Ensure the peak is at 1 (relative), normalize 
     m = max(w_rel); if m>0, w_rel = w_rel/m; end
     % Optional: shift peak to idx_peak if needed (rare); here we trust provided profile.
     w_px = max(1, maxW * max(P.end_min_frac, w_rel));
@@ -115,12 +115,12 @@ head_boundary = GetEndBoundary(head_mask);
 
 neck_poly = centerline_to_polygon(C(idx_neck_lo:idx_neck_hi,:), w_px(idx_neck_lo:idx_neck_hi));
 neck_mask = poly2mask(neck_poly(:,1), neck_poly(:,2), H, W);
-neck_mask = neck_mask & worm_mask;% & ~head_mask;
+neck_mask = neck_mask & worm_mask;
 
 idx_tail_neck = (M-idx_head_end - neck_half):(M-idx_head_end + neck_half);
 tail_neck_poly = centerline_to_polygon(C(idx_tail_neck,:), w_px(idx_tail_neck));
 neck_tail_mask = poly2mask(tail_neck_poly(:,1), tail_neck_poly(:,2), H, W);
-neck_mask = neck_mask | neck_tail_mask;% & ~head_mask;
+neck_mask = neck_mask | neck_tail_mask;
 
 
 tail_poly = centerline_to_polygon(C((M-idx_head_end):end,:), w_px((M-idx_head_end):end));
@@ -266,7 +266,7 @@ end
 
 function w_px = profile_from_template(s, idx_peak, maxW, tmpl, end_min_frac)
 % Use a supplied mean_worm template: to_head & to_tail relative diameters.
-% We resample each side to match the number of samples on that side.
+% Resample each side to match the number of samples on that side.
     M = numel(s);
     w_rel = zeros(M,1);
     % Head side
@@ -333,3 +333,4 @@ function BW = postprocess(BW, close_r, do_fill)
     if do_fill, BW = imfill(BW, 'holes'); end
     BW = BW>0;
 end
+
