@@ -26,17 +26,16 @@ from skimage.draw import line as draw_line
 import warnings
 from postproc import split_instances_v2, _get_labels_from_logits
 from postproc import calculate_sizes_in_image
-# ---- local project imports (adjust if needed) -------------------------------
-# We try relative imports first; if they fail, add this script's folder to sys.path
+# ---- local project imports  -------------------------------
+# try relative imports first; if they fail, add this script's folder to sys.path
 try:
-    from FlexiUnet import load_unet  # your loader returns a model set to eval()
+    from FlexiUnet import load_unet  
 except Exception:
     sys.path.append(str(Path(__file__).resolve().parent))
     from FlexiUnet import load_unet
 
 try:
-    # We import helpers only to *reuse* consolidate_markers, but we keep our
-    # own resegment() here so it respects user edits.
+
     from postproc import consolidate_markers
 except Exception:
     consolidate_markers = None
@@ -62,7 +61,7 @@ def _exe_dir() -> Path:
     - onefile/onedir build: folder of the .exe
     - normal Python: folder of this .py file
     """
-    if getattr(sys, "frozen", False):        # PyInstaller
+    if getattr(sys, "frozen", False):        
         return Path(sys.executable).parent
     return Path(__file__).resolve().parent
 
@@ -79,7 +78,7 @@ def _find_default_ckpt() -> Path:
             "No .pth checkpoint found next to the app. "
             "Place your weights file next to the .exe (or in weights/models/checkpoints)."
         )
-    # pick the first (or implement your own selection rule)
+    
     return candidates[0]
 def _remove_label_at_click(layer, event):
     """Mouse callback for the Instances layer: delete clicked label."""
@@ -129,7 +128,7 @@ def load_image_any(path: Path) -> np.ndarray:
         if arr.ndim == 2:
             img = arr
         elif arr.ndim == 3:
-            # by convention in your repo, channel 1 is BF
+            # by convention, channel 1 is BF
             if arr.shape[-1] >= 2:
                 img = arr[..., 1]
             else:
@@ -138,14 +137,14 @@ def load_image_any(path: Path) -> np.ndarray:
             raise ValueError(f"Unsupported .mat shape: {arr.shape}")
         # Normalize if not already in 0-1
         if img.max() > 1.0:
-            # Often raw BF is 0..255
+            
             img = img / 255.0
         img = np.clip(img, 0.0, 1.0).astype(np.float32)
         return img
     else:
         img = imageio.imread(path)
         if img.ndim == 3:
-            # convert to grayscale (simple mean; you can swap to BF channel if needed)
+            # convert to grayscale 
             img = img.mean(axis=-1)
         img = img.astype(np.float32)
         if img.max() > 1.0:
@@ -216,7 +215,7 @@ def main(argv):
                       base_filters=bf,depth=depth)
     model_device = torch.device(device)
 
-    # lazy imports (GUI libs)
+    
     import napari
     from magicgui import magicgui
 
@@ -343,7 +342,7 @@ def main(argv):
         
         # clear any existing layers
         viewer.layers.clear()
-        # base
+        
         # shapes layer for crisp lines (optional)
         viewer.add_shapes(name="Draw lines", shape_type="path", edge_width=2)
         viewer.add_image(cur_image, name="BF", colormap="gray")
@@ -475,7 +474,7 @@ def main(argv):
         #viewer.layers["BND prob"].data   = bnd
         resegment()
         
-    # e.g. recompute segmentation here
+   
 
     @magicgui(
         threshold={"label": "Threshold", "min": 0.0, "max": 0.2, "step": 0.01},
@@ -506,8 +505,7 @@ def main(argv):
                 pass
             toggle_remove.call_button.text = "Remove labels (click)"
     
-    # after you create/show Instances for the first time:
-    # viewer.add_labels(labels, name="Instances", opacity=0.5)
+   
     
     # add the toggle to the right dock
     viewer.window.add_dock_widget(toggle_remove, area="right")
