@@ -11,6 +11,7 @@ import os, sys
 if hasattr(sys, "_MEIPASS"):
     base = os.path.join(sys._MEIPASS, "vispy")
     os.environ.setdefault("VISPY_DATA_PATH", os.path.join(base, "resources"))
-    # PyQt5 backend to match your build
+    # PyQt5 backend
     os.environ.setdefault("VISPY_APP", "PyQt5")
     os.environ.setdefault("QT_API", "pyqt5")
+
