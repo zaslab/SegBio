@@ -27,24 +27,24 @@ def make_targets(label, boundary_width=4, seed_method="skeleton"):
         b = binary_dilation(b, footprint=disk(max(1, boundary_width // 2)))
     boundary = (b & (fg > 0)).astype(np.float32)
 
-    # 2) Seeds (one compact blob per instance)
+     2) Seeds (one compact blob per instance)
     if seed_method == "skeleton":
-        #  use a pruned skeleton as a learnable "seed" blob
+          use a pruned skeleton as a learnable "seed" blob
         skel = make_skels(label)
-        # tidy/thicken a bit so the target isn’t too wispy
+         tidy/thicken a bit so the target isn’t too wispy
         
         skel = binary_dilation(skel, footprint=np.ones((2,2), dtype=bool)) 
         skel = skel & ~boundary.astype(bool)
         seed = skel.astype(np.float32)
         seed = keep_big_components(seed, min_area=40, connectivity=2)
     elif seed_method == "distance":
-        # Alternative: distance peaks inside each object
-#        rim = binary_dilation(boundary.astype(bool), structure=np.ones((3,3)))
+         Alternative: distance peaks inside each object
+        rim = binary_dilation(boundary.astype(bool), structure=np.ones((3,3)))
         rim = binary_dilation(boundary.astype(bool), footprint=np.ones((3,3))) 
         dist = ndi.distance_transform_edt(fg)
         dist[rim] = 0.0
         dist /= (dist.max() + 1e-6)
-        # Soft target is fine here; you can binarize during post-proc
+       
         seed = dist.astype(np.float32)
     else:
         raise ValueError("seed_method must be 'skeleton' or 'distance'")
@@ -96,5 +96,6 @@ def trim_skeleton_ends(skel_bool: np.ndarray, frac: float = 0.10) -> np.ndarray:
             cur[ends] = False
         out |= cur
     return out
+
 
 
