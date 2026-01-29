@@ -61,7 +61,7 @@ for i = 1:numel(meas)
     [im_path, sample_id] = find_image_for_measures(mpath);
     if isempty(im_path)
         warning('No image found for measures: %s', mpath);
-        skipped{end+1} = mpath; %#ok<AGROW>
+        skipped{end+1} = mpath; 
         continue
     end
 
@@ -69,13 +69,13 @@ for i = 1:numel(meas)
     S = load(mpath);
     if ~isfield(S,'measures')
         warning('Missing variable ''measures'' in %s', mpath);
-        skipped{end+1} = mpath; %#ok<AGROW>
+        skipped{end+1} = mpath; 
         continue
     end
     measures = S.measures;
     if isempty(measures) || size(measures,2) < 2
         warning('Bad/empty measures in %s', mpath);
-        skipped{end+1} = mpath; %#ok<AGROW>
+        skipped{end+1} = mpath; 
         continue
     end
 
@@ -100,7 +100,7 @@ for i = 1:numel(meas)
             end
         else
             fprintf('No head_coords; skipping (interactive=false): %s\n', sample_id);
-            skipped{end+1} = mpath; %#ok<AGROW>
+            skipped{end+1} = mpath; 
             continue
         end
     end
@@ -185,7 +185,7 @@ end
 % ======================= nested / local helpers =======================
 
 function [wm, hm, tm, nk, hb, tb, box] = gen_one_worm(w, im, measures, heads_by_worm, gen_params, sample_id)
-% Safe wrapper around GenerateMask for one worm
+% wrapper around GenerateMask for one worm
 wm=[]; hm=[]; tm=[]; nk=[]; hb=[]; tb=[]; box=[nan nan nan nan];
 hc = heads_by_worm(w,:);
 if any(isnan(hc)), return; end
@@ -283,7 +283,7 @@ function save_mat_bundle(sample_dir, in, out_inst, heads_mask, tails_mask,...
 save(fullfile(sample_dir, 'in.mat'), 'in');
 
 % instance map
-out = out_inst; %#ok<NASGU>
+out = out_inst; 
 save(fullfile(sample_dir, 'out.mat'), 'out');
 
 % class masks
@@ -294,17 +294,18 @@ save(fullfile(sample_dir, 'head_bound.mat'),  'head_bound')
 save(fullfile(sample_dir, 'tail_bound.mat'),  'tail_bound')
 
 % boxes
-box = BOX; %#ok<NASGU>  % Nx4
+box = BOX; 
 save(fullfile(sample_dir, 'box.mat'), 'box');
 
 % heads
 if nargin < 7 || isempty(head_coords)
-    head_coords = zeros(0,2); %#ok<NASGU>
+    head_coords = zeros(0,2); 
 end
 save(fullfile(sample_dir, 'head_coords.mat'), 'head_coords');
 
 % strain
 if nargin < 8 || isempty(strain_val), strain_val = 'unknown'; end
-strain = char(strain_val); %#ok<NASGU>
+strain = char(strain_val); 
 save(fullfile(sample_dir, 'strain.mat'), 'strain');
 end
+
