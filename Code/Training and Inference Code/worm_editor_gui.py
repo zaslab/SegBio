@@ -1,5 +1,5 @@
 # worm_editor_gui.py
-# Minimal interactive GUI for your worm UNet + watershed post-proc, with manual fixes.
+# Minimal interactive GUI for the worm UNet + watershed post-proc, with manual fixes.
 # Dependencies: napari, magicgui, numpy, torch, skimage, scipy, imageio, (optional) tifffile, opencv-python
 #
 # Usage:
