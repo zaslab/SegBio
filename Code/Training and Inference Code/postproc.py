@@ -15,7 +15,7 @@ from skimage.segmentation import find_boundaries,watershed,relabel_sequential
 from skimage.morphology import remove_small_objects, binary_erosion, thin, medial_axis
 from skimage.measure import regionprops, label
 
-# --- add near the top of postproc.py (after imports) -------------------------
+
 # --- Size filtering utilities -----------------------------------------------
 
 
@@ -170,7 +170,7 @@ def _instances_from_maps(fg_bool, bnd_bool, seed_bool, *,
     rim = find_boundaries(fg_bool.astype(int), mode="outer")
     mask = fg_bool & (~(bnd_bool | rim))
 
-    # consolidate/generate markers (your existing heuristic)
+    # consolidate/generate markers
     markers = consolidate_markers(seed_bool, mask)
 
     # distance-guided watershed
@@ -183,7 +183,7 @@ def _instances_from_maps(fg_bool, bnd_bool, seed_bool, *,
     
     return labels.astype(np.int32)
 
-# --- replace your split_instances with this overloaded version ---------------
+
 def split_instances_v2(pred_logits=None, *,
                     fg_prob=None, bnd_edit=None, seed_edit=None,
                     fg_thr=0.5, bnd_thr=0.5, seed_thr=0.5,
@@ -207,11 +207,11 @@ def split_instances_v2(pred_logits=None, *,
     
 
     if pred_logits is not None:
-        # original path: threshold UNet outputs
+        
         if hasattr(pred_logits, "detach"):
             p = pred_logits.detach().cpu().sigmoid().numpy()
         else:
-            p = 1.0 / (1.0 + np.exp(-pred_logits))  # sigmoid
+            p = 1.0 / (1.0 + np.exp(-pred_logits))  
 
         fg   = p[0] > fg_thr
         seed = p[2] > seed_thr
@@ -232,7 +232,7 @@ def split_instances_v2(pred_logits=None, *,
 
     fg   = keep_big_components(fg,   min_area=400, connectivity=2)
 
-    # NOTE: rim is added inside _instances_from_maps, but we keep your filtering here:
+   
     seed = keep_big_components(seed, min_area=200, connectivity=2)
 
     bnd  = keep_big_components(bnd,  min_area=600, connectivity=2)
@@ -281,3 +281,4 @@ def consolidate_markers(seed_bool, mask_bool):
         k += 1
         markers[y0, x0] = k
     return markers
+
