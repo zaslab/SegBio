@@ -1,28 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import annotations
-"""wormseg.cli.train_unet_seg
-================================
-Train the parametrisable **3‑layer UNet** on either **head** or **tail** worm
-masks stored in the legacy MATLAB dataset.  Uses the **original masked BCE +
-Dice loss** (0.6 × BCE + 0.4 × Dice) and saves checkpoints every
-``--save-every`` epochs (default 10).
-
-Example (Spyder/IPython)
------------------------
-```python
-from wormseg.cli.train_unet_seg import main
-
-main([
-    "--root", r"D:\\WormProject\\NNdata",
-    "--epochs", "80",
-    "--batch-size", "8",
-    "--device", "cuda",
-    "--base-filters", "32",
-])
-```
-"""
-
-
 import argparse
 import math
 import random
@@ -255,8 +230,8 @@ def train_one_epoch(
 # ----------------------------------------------------------------------------
 
 def parse_args(argv: Iterable[str] | None = None):
-    p = argparse.ArgumentParser(description="Train 3‑layer UNet on worm heads or tails.")
-    p.add_argument("--root", required=True, default=r"/sci/labs/zaslab/eduard.bokman/WormSegmentor/midline_ignore_heads/TrainData", help="Folder containing NNdata/* sample dirs")
+    p = argparse.ArgumentParser(description="Train UNet.")
+    p.add_argument("--root", required=True)
     p.add_argument("--epochs", type=int, default=200)
     p.add_argument("--batch-size", type=int, default=8)
     p.add_argument("--lr", type=float, default=1e-3)
@@ -405,7 +380,7 @@ if __name__ == "__main__":
  
     main(
             [       
-    "--root", r"C:\Projects\Github\WormSegmentor\Output\TrainData\Duplicates",
+    "--root", r"path/to/TrainData",
     "--epochs", "200",
     "--batch-size","4" ,
     "--lr", '2e-3',
@@ -419,3 +394,4 @@ if __name__ == "__main__":
     "--compile",
 ]
 )
+
