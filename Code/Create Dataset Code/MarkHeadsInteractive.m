@@ -44,7 +44,7 @@ win_title  = get_opt(opts,'title', 'Click HEADS: left-click to add, U=undo, R=re
 % figure & axes
 fig = figure('Name', win_title, 'NumberTitle','off', 'Color','w', ...
              'KeyPressFcn', @on_key, 'WindowButtonDownFcn', @on_click);
-ax = axes('Parent', fig); %#ok<LAXES>
+ax = axes('Parent', fig); 
 im = rescale(im).*255;
 try
     imagesc(im, 'Parent', ax); hold(ax,'on');
@@ -82,7 +82,7 @@ uiwait(fig);
                 cp = ax.CurrentPoint;  % 2×3; take first row XY
                 xy = cp(1,1:2);
                 if inside_image(xy, size(im))
-                    pts(end+1,:) = xy; %#ok<AGROW>
+                    pts(end+1,:) = xy; 
                     refresh_scatter();
                 end
             case 'alt'     % right-click -> finish
@@ -115,8 +115,7 @@ uiwait(fig);
     end
 
     function finish_and_close()
-        % Accept even if count ≠ expected; you can enforce if you want:
-        % if size(pts,1) ~= exp_count, return; end
+    
         close_safely();
     end
 
@@ -171,3 +170,4 @@ else
 end
 C = C(all(isfinite(C),2),:);
 end
+
