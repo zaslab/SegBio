@@ -61,8 +61,8 @@ class UNet(nn.Module):
         if depth < 2:
             raise ValueError("depth must be >= 2")
 
-        # Channel plan per encoder stage
-        chans = [base_filters * (2 ** i) for i in range(depth)]  # e.g., [32,64,128] for depth=3
+         Channel plan per encoder stage
+        chans = [base_filters * (2 ** i) for i in range(depth)]  
         self.depth = depth
 
         # Encoder
@@ -102,10 +102,10 @@ class UNet(nn.Module):
         x = self.bottleneck(x)
 
         # Decoder (mirror)
-        for i in range(self.depth):  # i = 0..depth-1
+        for i in range(self.depth): 
             x_up = self.upconvs[i](x)
-            # Match spatial size to the corresponding skip (pad if needed)
-            skip = skips[-(i+1)]  # last skip first
+            
+            skip = skips[-(i+1)]  
             diff_y = skip.size(2) - x_up.size(2)
             diff_x = skip.size(3) - x_up.size(3)
             if diff_y or diff_x:
@@ -114,7 +114,7 @@ class UNet(nn.Module):
             x = torch.cat([skip, x_up], dim=1)
             x = self.decoders[i](x)
 
-        return self.out_conv(x)   # logits (apply sigmoid/softmax outside if needed)
+        return self.out_conv(x)   
 def load_unet(
     ckpt: Path,
     device: torch.device = "cpu",
@@ -146,4 +146,5 @@ def load_unet(
     state_dict: dict[str, Any] = torch.load(ckpt, map_location=device)
     model.load_state_dict(state_dict, strict=True)
     model.eval()
+
     return model
