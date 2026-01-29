@@ -24,13 +24,12 @@ from segmentor_utils import WormAugUniversal, resize_mask_512, resize_image_512
 class MatSegDataset(Dataset):
     """Reads *in.mat*, *heads_mask.mat*, *tails_mask.mat* from each sample dir."""
 
-    def __init__(self, root: str | Path, *, transform=None):  # noqa: D401
+    def __init__(self, root: str | Path, *, transform=None): 
         self.root = Path(root)
         self.samples = sorted(p for p in self.root.iterdir() if p.is_dir())
         if not self.samples:
             raise RuntimeError(f"No sample folders found under {self.root}")
         self.transform = transform  
-    # helper ------------------------------------------------------------------
     @staticmethod
     def _first_key(mat: dict) -> str:
         return next(k for k in mat.keys() if not k.startswith("__"))
@@ -38,7 +37,7 @@ class MatSegDataset(Dataset):
     def _load_sample(self, path: Path) -> Tuple[Tensor, Tensor, Tensor]:
         img_mat = loadmat(path / "in.mat", simplify_cells=True)
         
-        bf = img_mat[self._first_key(img_mat)].astype(np.float32)#[..., 0]  # H×W
+        bf = img_mat[self._first_key(img_mat)].astype(np.float32)  # H×W
         out_mask = loadmat(path / "out.mat", simplify_cells=True)
         out = out_mask[self._first_key(out_mask)].astype(np.float32)
         bf  = resize_image_512(bf)    # uint8 H=W=512
@@ -46,7 +45,7 @@ class MatSegDataset(Dataset):
         
         bf = bf / 255.0  # ensure 0‑1 range
         
-        t = make_targets(out, boundary_width=4, seed_method="skeleton")  # or "distance"
+        t = make_targets(out, boundary_width=4, seed_method="skeleton") 
         target = np.stack([t["fg"], t["boundary"], t["seed"]], axis=0).astype("float32")  # (3,H,W)
         target = torch.from_numpy(target) 
         
@@ -251,7 +250,7 @@ def parse_args(argv: Iterable[str] | None = None):
                    help="Run validation every N epochs (0 = never)")
     p.add_argument("--augs-per-sample", type=int, default=1,
                    help="How many random augmentations to generate per image per epoch (stacked in-batch).")
-    # CLI
+  
     p.add_argument("--compile", action="store_true",
                    help="Use torch.compile to JIT-compile the model graph.")
     p.add_argument("--compile-mode", default="max-autotune",
@@ -394,4 +393,5 @@ if __name__ == "__main__":
     "--compile",
 ]
 )
+
 
