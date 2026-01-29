@@ -57,7 +57,7 @@ class WormAugUniversal:
         if worm2  is not None:  pack.append(worm2);  is_label.append(True)
         if worm3  is not None:  pack.append(worm3);  is_label.append(True)
 
-        # Sanity: channel-first
+        #channel-first
         for t in pack:
             assert t.ndim == 3, f"expected C×H×W, got {t.shape}"
 
@@ -172,4 +172,5 @@ def _endpoints(skel_bool: np.ndarray) -> np.ndarray:
     sk = skel_bool.astype(bool)
     # neighbors count (includes center pixel)
     nb = ndi.convolve(sk.astype(np.uint8), np.ones((3,3), np.uint8), mode="constant", cval=0)
+
     return sk & (nb == 2)  # 1 neighbor + self
