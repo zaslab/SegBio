@@ -42,7 +42,7 @@ if N==0 || K==0
 end
 
 % ---- preprocess worms: resample & cumulative arc length ----
-Worm(N) = struct('C',[],'cumlen',[],'L',0); %#ok<NASGU>
+Worm(N) = struct('C',[],'cumlen',[],'L',0); 
 for i = 1:N
     C0 = ensure_xy(measures{i,1});
     [Cres, ~, cumlen] = resample_centerline_with_cumlen(C0, P.resample_step_px);
@@ -149,7 +149,7 @@ function [C, s_norm, cumlen] = resample_centerline_with_cumlen(C0, step)
     s_norm = tq / max(tq(end), eps);
     % ensure unique rows
     C = unique(C,'rows','stable');
-    % if too short, pad a hair to avoid degeneracy
+    % if too short, pad to avoid degeneracy
     if size(C,1) < 2
         C = [C; C + [1e-6,0]];
         cumlen = [0; step];
@@ -196,7 +196,7 @@ function pairs = greedy_assign(D)
         [v, idx] = min(Dwork(:));
         if ~isfinite(v), break; end
         [i, j] = ind2sub([N,K], idx);
-        pairs(end+1,:) = [i, j]; %#ok<AGROW>
+        pairs(end+1,:) = [i, j]; 
         Dwork(i,:) = inf;
         Dwork(:,j) = inf;
     end
@@ -207,3 +207,4 @@ function diag = pack_diag(Worm, D, Dxy, Dend, Spos, Near)
                   's_at_px', Spos, 'nearest_xy', Near, ...
                   'worm_lengths_px', [Worm.L].');
 end
+
