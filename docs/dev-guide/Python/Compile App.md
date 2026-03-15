@@ -22,6 +22,6 @@ Build a standalone executable for the inference GUI using PyInstaller.
   ```bash
   "path\to\venv\Scripts\python.exe" -m PyInstaller WormGui.spec path\to\output\filename.exe 
   ```
-
+5) Repeat for annotation GUI using Annotationvenv, io_utils.py, geometryutils.py and AnnotationGUI.spec
 
 
