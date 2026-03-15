@@ -24,4 +24,7 @@ Build a standalone executable for the inference GUI using PyInstaller.
   ```
 5) Repeat for annotation GUI using Annotationvenv, io_utils.py, geometryutils.py and AnnotationGUI.spec
 
+## Venv dropbox links
+[Annotation](https://www.dropbox.com/scl/fi/g035sp5ybtkn5e1kd7nw6/Annotationvenv.zip?rlkey=1g2n276y9p3oy232ivu22tyvb&st=f7wm8rci&dl=0)  
 
+[Inference](https://www.dropbox.com/scl/fi/q01kcil5p79d6v9he9m5x/WormSegmentor.zip?rlkey=43cvr2h5c3svy3ka2t5d8tchs&st=5ishhhwz&dl=0)
