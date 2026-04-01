@@ -1,5 +1,5 @@
-# WormSegmentor
-WormSegmentor is a complete system for segmenting and separating long, narrow, bendy objects like C. elegans worms
+# SegBio
+SegBio is a complete system for segmenting and separating long, narrow, bendy objects like C. elegans worms
 
 ![My figure](GitImage.png)
 ## The Challenge: Slow Annotation
